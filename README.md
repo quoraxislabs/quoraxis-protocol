@@ -54,6 +54,7 @@ Quoraxis is currently in the foundation and research phase. The protocol is unde
 
 ## Community
 
+- Instagram: https://www.instagram.com/quoraxis/
 - X: https://x.com/QuoraxisLabs
 - Email: quoraxislabs@gmail.com
 
