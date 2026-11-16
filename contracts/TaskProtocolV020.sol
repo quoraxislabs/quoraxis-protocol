@@ -293,3 +293,4 @@ contract TaskProtocolV020 {
 
     function getTask(uint256 taskId) external view taskExists(taskId) returns (Task memory) { return tasks[taskId]; }
     function version() external pure returns (string memory) { return "0.2.0"; }
+}
