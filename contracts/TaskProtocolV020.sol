@@ -279,18 +279,39 @@ contract TaskProtocolV020 {
     /// @notice Allows a contract wallet unable to receive ETH to direct its own credit elsewhere.
     function withdrawPaymentTo(address payable recipient) external { _withdraw(recipient); }
 
+    
     function _withdraw(address payable recipient) private {
         if (recipient == address(0) || recipient == address(this)) revert InvalidRecipient();
+
         uint256 amount = pendingWithdrawals[msg.sender];
+
         if (amount == 0) revert NoPaymentAvailable();
+
         pendingWithdrawals[msg.sender] = 0;
         totalPendingWithdrawals -= amount;
-        (bool success,) = recipient.call{value: amount}("");
-        if (!success) revert WithdrawalFailed();
+
         emit PaymentWithdrawn(msg.sender, amount);
         emit WithdrawalRecipient(msg.sender, recipient, amount);
+
+        (bool success,) = recipient.call{value: amount}("");
+
+        if (!success) revert WithdrawalFailed();
     }
 
-    function getTask(uint256 taskId) external view taskExists(taskId) returns (Task memory) { return tasks[taskId]; }
-    function version() external pure returns (string memory) { return "0.2.0"; }
+    function getTask(uint256 taskId)
+        external
+        view
+        taskExists(taskId)
+        returns (Task memory)
+    {
+        return tasks[taskId];
+    }
+
+    function version()
+        external
+        pure
+        returns (string memory)
+    {
+        return "0.2.0";
+    }
 }
