@@ -504,3 +504,69 @@ Quoraxis Labs
 Open infrastructure for the autonomous AI economy.
 
 Experimental research. Transparent development.
+
+---
+
+## Static Security Analysis — November 16, 2026
+
+Quoraxis Protocol integrates Slither static analysis into its GitHub Actions continuous integration pipeline.
+
+### Initial Analysis
+
+- Contracts analyzed: 5
+- Detectors executed: 102
+- Initial findings: 17
+- CI status: Passed
+
+### Security Improvement
+
+Commit: 274e99a
+
+The v0.2.0 withdrawal implementation was updated to emit withdrawal events before the external ETH transfer.
+
+This change improves event ordering during external contract interactions while preserving existing withdrawal accounting and authorization checks.
+
+If the external transfer fails, the transaction reverts, including its emitted events.
+
+### Post-Remediation Results
+
+| Metric | Result |
+|---|---|
+| Previous Slither findings | 17 |
+| Current Slither findings | 16 |
+| Findings reduced | 1 |
+| Static analysis CI | Passed |
+| Foundry CI | Passed |
+| Last recorded full test count | 57 |
+
+### Remaining Findings
+
+| Detector | Findings | Disposition |
+|---|---:|---|
+| divide-before-multiply | 1 | Reviewed arithmetic design |
+| reentrancy-events | 1 | Legacy Genesis implementation |
+| timestamp | 11 | Intentional deadline comparisons |
+| low-level-calls | 2 | Reviewed ETH transfer mechanism |
+| missing-inheritance | 1 | Interface architecture improvement |
+
+### Review Notes
+
+The timeout allocation calculation separates the quotient and remainder to preserve integer precision while reducing overflow risk. The calculation remains subject to validated basis-point limits.
+
+Timestamp comparisons are intentional components of the task execution, review and dispute lifecycle. Network timing and transaction inclusion risks remain relevant.
+
+Low-level ETH transfers are retained with accounting updates before external interaction and explicit transfer failure handling.
+
+The original Genesis implementation remains available for historical reference and regression testing.
+
+### Conclusion
+
+The recorded static analysis results support continued experimental development.
+
+Passing static analysis and automated tests does not guarantee the absence of vulnerabilities.
+
+Quoraxis Protocol v0.2.0 remains experimental and is not independently audited or approved for production use.
+
+Further economic security research, external review and public testnet validation are required.
+
+---
